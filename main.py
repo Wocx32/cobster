@@ -152,6 +152,7 @@ for applet_id, applet in enumerate(applets):
     try:
         posts = get_hot_reddit_posts(subreddit, limit)
     except prawcore.exceptions.UnavailableForLegalReasons:
+        logger.error(f'Subreddit not available for legal reasons {{applet: {applet_id}}}')
         continue
 
     for post, data in posts.items():
