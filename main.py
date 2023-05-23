@@ -1,6 +1,7 @@
 
 from time import sleep
 import praw
+import prawcore
 import requests
 import sqlite3
 import datetime
@@ -147,7 +148,11 @@ for applet_id, applet in enumerate(applets):
         continue
 
     limit = applet.get('posts', 10)
-    posts = get_hot_reddit_posts(subreddit, limit)
+    
+    try:
+        posts = get_hot_reddit_posts(subreddit, limit)
+    except prawcore.exceptions.UnavailableForLegalReasons:
+        continue
 
     for post, data in posts.items():
 

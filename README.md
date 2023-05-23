@@ -26,3 +26,7 @@ applets = [
     ...
 ]
 ```
+# usage
+```bash
+python main.py
+```
