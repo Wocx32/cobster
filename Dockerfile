@@ -12,5 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN echo "0 * * * * python3 /usr/src/app/main.py" | crontab -
+RUN echo "0 * * * * cd /usr/src/app && python3 main.py" | crontab -
 CMD ["crond", "-f", "-d", "0", "-L", "/dev/stdout"]
