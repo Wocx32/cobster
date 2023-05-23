@@ -6,6 +6,8 @@ import requests
 import sqlite3
 import datetime
 
+from lxml import etree
+
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
@@ -63,7 +65,20 @@ adapter = HTTPAdapter(max_retries=retries)
 session.mount('http://', adapter)
 session.mount('https://', adapter)
 
+def get_og_image(url):
+    response = session.get(url)
+    og_image = None
 
+    # Parse HTML using lxml
+    parser = etree.HTMLParser()
+    tree = etree.fromstring(response.content, parser)
+
+    # Find the og:image meta tag
+    og_image_element = tree.xpath('//meta[@property="og:image"]/@content')
+    if og_image_element:
+        og_image = og_image_element[0]
+
+    return og_image
 
 def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts=-1):
     subreddit = reddit.subreddit(subreddit)
@@ -97,6 +112,9 @@ def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts
         
         else:
             link_to = post.url
+            img = get_og_image(link_to)
+            if img:
+                img_url = img
             
         content = post.selftext
         if not content and link_to:
