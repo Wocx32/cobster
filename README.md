@@ -10,6 +10,7 @@ client_secret = '{your reddit client secret}'
 user_agent = '{your app user agent}'
 
 database = '{database path}' # parent folder must exist
+exception_notif_webhook = '{webhook to send exception tracebacks to}' # not necessary 
 ```
 # applets
 add in applets.py
