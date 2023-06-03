@@ -30,3 +30,6 @@ applets = [
 ```bash
 python main.py
 ```
+
+# TODO
+shift to docker compose with volume
