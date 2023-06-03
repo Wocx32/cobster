@@ -30,6 +30,10 @@ applets = [
 ```bash
 python main.py
 ```
-
+# docker
+```bash
+docker run --name cobster --restart unless-stopped -v cobster-db:/usr/src/app/db -d cobster
+```
 # TODO
-shift to docker compose with volume
+
+- `shift to docker compose with volume`
