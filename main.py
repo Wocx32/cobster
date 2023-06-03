@@ -1,5 +1,6 @@
 
 from time import sleep
+import traceback
 import praw
 import prawcore
 import requests
@@ -66,8 +67,11 @@ session.mount('http://', adapter)
 session.mount('https://', adapter)
 
 def get_og_image(url):
-    response = session.get(url)
     og_image = None
+    if not url.startswith('http'):
+        return og_image
+    
+    response = session.get(url)
 
     # Parse HTML using lxml
     parser = etree.HTMLParser()
@@ -120,7 +124,12 @@ def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts
         if not content and link_to:
             content = link_to
 
-        posts[post.id] = [post_url, img_url, content, post.title, post.author.name]
+        if post.author:
+            author = post.author.name
+        else:
+            author = ''
+
+        posts[post.id] = [post_url, img_url, content, post.title, author]
         post_counter += 1
         if post_counter == max_posts:
             return posts
@@ -171,6 +180,21 @@ for applet_id, applet in enumerate(applets):
         posts = get_hot_reddit_posts(subreddit, limit)
     except prawcore.exceptions.UnavailableForLegalReasons:
         logger.error(f'Subreddit not available for legal reasons {{applet: {applet_id}}}')
+        continue
+    except Exception as e:
+        logger.exception(f'Exception occured in applet: {applet_id}', exc_info=1)
+
+        try:
+            tb = "".join(traceback.format_exception(e, value=e, tb=e.__traceback__)).strip()
+
+            json_content = {
+                'content': f'```python\nApplet id: {applet_id}\n{tb}```'
+            }
+
+            execute_webhook(config.exception_notif_webhook, json_content)
+        except:
+            pass
+
         continue
 
     for post, data in posts.items():
