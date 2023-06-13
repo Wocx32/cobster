@@ -165,7 +165,10 @@ for applet_id, applet in enumerate(applets):
 
     subreddit = applet.get('subreddit')
     webhook = applet.get('webhook')
+    active = applet.get('active', True)
     
+
+
     if not subreddit:
         logger.error(f'No subreddit provided {{applet: {applet_id}}}')
         continue
@@ -176,6 +179,9 @@ for applet_id, applet in enumerate(applets):
 
     limit = applet.get('posts', 10)
     
+    if not active:
+        continue
+
     try:
         posts = get_hot_reddit_posts(subreddit, limit)
     except prawcore.exceptions.UnavailableForLegalReasons:
