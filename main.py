@@ -187,6 +187,8 @@ for applet_id, applet in enumerate(applets):
     except prawcore.exceptions.UnavailableForLegalReasons:
         logger.error(f'Subreddit not available for legal reasons {{applet: {applet_id}}}')
         continue
+    except prawcore.exceptions.Forbidden:
+        logger.error(f'Cannot access subreddit {{applet: {applet_id}}}')
     except Exception as e:
         logger.exception(f'Exception occured in applet: {applet_id}', exc_info=1)
 
