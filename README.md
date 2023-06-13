@@ -20,6 +20,7 @@ applets = [
         'webhook': '{webhook url}',
         'subreddit': '{subreddit}',
         'posts': '{number to post}' # optional
+        'active': True              # optional (True or False)
     },
     {
         ...
@@ -32,6 +33,10 @@ applets = [
 python main.py
 ```
 # docker
+In cloned repo
+```bash
+docker build -t cobster .
+```
 ```bash
 docker run --name cobster --restart unless-stopped -v cobster-db:/usr/src/app/db -d cobster
 ```
