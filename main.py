@@ -213,6 +213,9 @@ for applet_id, applet in enumerate(applets):
             'SELECT post_id, subreddit, timestamp FROM Post WHERE post_id=(?)', (post,)
         )
 
+        if cur.fetchone() is not None:
+            continue
+
         logger.info(f'Start webhook execution {{applet: {applet_id}}}')
 
         embed = {
