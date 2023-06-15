@@ -106,7 +106,7 @@ def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts
             continue
 
 
-        post_url = 'https://reddit.com/' + post.permalink
+        post_url = 'https://reddit.com' + post.permalink
 
         img_url = ''
         link_to = ''
