@@ -99,14 +99,14 @@ def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts
             continue
 
         cur.execute(
-            'SELECT post_id, subreddit, timestamp FROM Post WHERE post_id=(?)', (post.id,)
+            'SELECT post_id, subreddit, timestamp FROM Post WHERE post_id=(?)', (post.fullname,)
         )
 
         if cur.fetchone() is not None:
             continue
 
 
-        post_url = 'https://reddit.com/' + post.id
+        post_url = 'https://reddit.com/' + post.permalink
 
         img_url = ''
         link_to = ''
@@ -129,7 +129,7 @@ def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts
         else:
             author = ''
 
-        posts[post.id] = [post_url, img_url, content, post.title, author]
+        posts[post.fullname] = [post_url, img_url, content, post.title, author]
         post_counter += 1
         if post_counter == max_posts:
             return posts
