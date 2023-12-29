@@ -110,7 +110,7 @@ def get_hot_reddit_posts(subreddit='all', limit=20, ignored_flairs=[], max_posts
 
         img_url = ''
         link_to = ''
-        if post.url.endswith(".jpg") or post.url.endswith(".png") or post.url.endswith('gif'):
+        if post.url.endswith(".jpg") or post.url.endswith(".png") or post.url.endswith('gif') or post.url.endswith(".jpeg"):
 
             img_url = post.url
         
